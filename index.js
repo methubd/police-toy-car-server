@@ -29,6 +29,13 @@ async function run() {
 
     const toysCollection = client.db('PliceToysDB').collection('toys');
 
+    // Reading all toys 
+    app.get('/toys', async (req, res) => {
+        const result = await toysCollection.find().toArray();
+        res.send(result)
+    })
+    
+    // Creating toys 
     app.post('/toys', async (req, res) => {
         const newToy = req.body;
         const result = await toysCollection.insertOne(newToy)
