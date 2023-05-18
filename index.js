@@ -29,6 +29,27 @@ async function run() {
 
     const toysCollection = client.db('PliceToysDB').collection('toys');
 
+    // Reading 'Ambulance' category
+    app.get('/ambulance', async (req, res) => {
+      const query = {subCategory: "Ambulance"}
+      const result = await toysCollection.find(query).toArray()
+      res.send(result);
+    })
+
+    // Reading 'SUV' category
+    app.get('/suv', async (req, res) => {
+      const query = {subCategory: "SUV"}
+      const result = await toysCollection.find(query).toArray()
+      res.send(result);
+    })
+
+    // Reading 'Truck' category
+    app.get('/truck', async (req, res) => {
+      const query = {subCategory: "Truck"}
+      const result = await toysCollection.find(query).toArray()
+      res.send(result);
+    })
+
     // Reading all toys 
     app.get('/toys', async (req, res) => {
         const result = await toysCollection.find().toArray();
