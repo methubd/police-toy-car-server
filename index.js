@@ -30,34 +30,48 @@ async function run() {
     const toysCollection = client.db('PliceToysDB').collection('toys');
     const myToysCollection = client.db('PliceToysDB').collection('myToys');
 
-    // Reading 'Ambulance' category
-    app.get('/ambulance', async (req, res) => {
-      const query = {subCategory: "Ambulance"}
-      const result = await toysCollection.find(query).toArray()
-      res.send(result);
-    })
-
-    // Reading 'SUV' category
-    app.get('/suv', async (req, res) => {
-      const query = {subCategory: "SUV"}
-      const result = await toysCollection.find(query).toArray()
-      res.send(result);
-    })
-
-    // Reading 'Truck' category
-    app.get('/truck', async (req, res) => {
-      const query = {subCategory: "Truck"}
-      const result = await toysCollection.find(query).toArray()
-      res.send(result);
-    })
+    
 
     // Reading all toys 
     app.get('/toys', async (req, res) => {
         const result = await toysCollection.find().toArray();
         res.send(result)
     })    
+
+    // Deleting MyToy using id
+    app.delete('/myToys/:id', async (req, res) => {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await myToysCollection.deleteOne(query);
+      res.send(result)
+    })
     
-    // Toy by Id 
+    // Updating MyToy by Id
+    app.put('/mytoys/:id', async (req, res) => {
+        const id = req.params.id;
+        const filter = {_id: new ObjectId(id)}
+        const options = {upsert: true}
+        const oldToy = req.body;
+        const toy = {
+          $set: {
+            name: oldToy.name,
+            quantity: oldToy.quantity,
+            price: oldToy.price
+          }
+        }        
+        const result = await myToysCollection.updateOne(filter, toy, options)
+        res.send(result);
+    })
+
+    // Reading MyToy by Id
+    app.get('/mytoys/:id', async (req, res) => {
+        const id = req.params.id;
+        const query = {_id: new ObjectId(id)}
+        const result = await myToysCollection.findOne(query)
+        res.send(result);
+    })
+
+    // Reading Toy by Id
     app.get('/toys/:id', async (req, res) => {
         const id = req.params.id;
         const query = {_id: new ObjectId(id)}
@@ -65,7 +79,7 @@ async function run() {
         res.send(result);
     })
 
-    //Reading MyToy by email
+    // Reading MyToy by email
     app.get('/myToys', async (req, res) => {
       let query = {}
       if(req.query.email){
@@ -87,6 +101,32 @@ async function run() {
         const newToy = req.body;
         const result = await toysCollection.insertOne(newToy)
         res.send(result);
+    })
+
+
+    /*************************
+     * TABS Data
+     *************************/
+
+    // Reading 'Ambulance' category
+    app.get('/ambulance', async (req, res) => {
+      const query = {subCategory: "Ambulance"}
+      const result = await toysCollection.find(query).toArray()
+      res.send(result);
+    })
+
+    // Reading 'SUV' category
+    app.get('/suv', async (req, res) => {
+      const query = {subCategory: "SUV"}
+      const result = await toysCollection.find(query).toArray()
+      res.send(result);
+    })
+
+    // Reading 'Truck' category
+    app.get('/truck', async (req, res) => {
+      const query = {subCategory: "Truck"}
+      const result = await toysCollection.find(query).toArray()
+      res.send(result);
     })
 
     // Send a ping to confirm a successful connection
