@@ -28,9 +28,7 @@ async function run() {
     await client.connect();
 
     const toysCollection = client.db('PliceToysDB').collection('toys');
-    const myToysCollection = client.db('PliceToysDB').collection('myToys');
-
-    
+    const myToysCollection = client.db('PliceToysDB').collection('myToys');    
 
     // Reading all toys 
     app.get('/toys', async (req, res) => {
