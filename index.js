@@ -139,7 +139,7 @@ run().catch(console.dir);
 
 
 app.get('/', (req, res) => {
-    res.send('Police Toy Car (SERVER !)')
+    res.send('Police Toy Car (SERVER)')
 })
 
 app.listen(port, () => {
