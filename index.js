@@ -23,7 +23,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    client.connect();
 
     const toysCollection = client.db('PliceToysDB').collection('toys');
     const myToysCollection = client.db('PliceToysDB').collection('myToys');    
@@ -126,8 +126,10 @@ async function run() {
     })
 
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Mongo Connected!");
+
+    // await client.db("admin").command({ ping: 1 });
+    // console.log("Mongo Connected!");
+
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
